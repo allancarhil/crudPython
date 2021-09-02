@@ -5,17 +5,26 @@ import datetime
 from sqlalchemy import Column, Integer, DateTime
 import mysql.connector  #pip install mysqlclient     pip install mysql-connector-python
 import jsons #pip install jsons
+import sqlalchemy
 from sqlalchemy import create_engine
 import psycopg2
 
 
-
+#CONEXÃO COM O  BANCO DE DADOS E CRIAÇÃO DE DATABASE
 app = Flask(__name__)
+engine = sqlalchemy.create_engine('postgresql://postgres:12345@localhost')
+conn = engine.connect()
+conn.execute("commit")
+conn.execute("create database test")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-#engine = create_engine('postgresql+psycopg2://postgres:12345@localhost:5432/crud')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/crud'
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres///crud'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@localhost/test'
 db = SQLAlchemy(app)
+
+#CRIAÇÃO DE TABLE
+from app import db
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 #CRIAÇÃO DA CLASSE CLIENTE
 class Cliente(db.Model):
@@ -28,6 +37,7 @@ class Cliente(db.Model):
 
     def to_json(self):
         return {"id": id, "nome": self.nome, "razao_social": self.razao_social, "cnpj": self.cnpj, "data_inclusao": self.data_inclusao}
+db.create_all()
 
 # SELECIONA TODOS OS CLIENTES
 @app.route("/clientes", methods=["GET"])
