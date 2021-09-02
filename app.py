@@ -9,12 +9,16 @@ from sqlalchemy import create_engine
 import psycopg2
 
 
-#CONEXÃO COM O  BANCO DE DADOS E CRIAÇÃO DE DATABASE
+
 app = Flask(__name__)
+
+#CONEXÃO COM O BANCO APRA CRIAÇÃO DE DATABSE
 engine = sqlalchemy.create_engine('postgresql://postgres:12345@localhost')
 conn = engine.connect()
 conn.execute("commit")
 conn.execute("create database crud_teste")
+
+#CONEXÃO COM A TABLE 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@localhost/crud_teste'
 db = SQLAlchemy(app)
