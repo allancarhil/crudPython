@@ -3,7 +3,6 @@ from flask import Flask, Response, request #pip install flask
 from flask_sqlalchemy import SQLAlchemy #pip install Flask-SQLAlchemy
 import datetime
 from sqlalchemy import Column, Integer, DateTime
-import mysql.connector  #pip install mysqlclient     pip install mysql-connector-python
 import jsons #pip install jsons
 import sqlalchemy
 from sqlalchemy import create_engine
@@ -15,9 +14,9 @@ app = Flask(__name__)
 engine = sqlalchemy.create_engine('postgresql://postgres:12345@localhost')
 conn = engine.connect()
 conn.execute("commit")
-conn.execute("create database test")
+conn.execute("create database crud_teste")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@localhost/test'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@localhost/crud_teste'
 db = SQLAlchemy(app)
 
 #CRIAÇÃO DE TABLE
